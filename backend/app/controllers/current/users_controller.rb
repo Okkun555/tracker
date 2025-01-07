@@ -8,7 +8,7 @@ class Current::UsersController < ApplicationController
       id: @current_user.id,
       email: @current_user.email,
       provider: @current_user.provider,
-      allow_password_change: @current_user.allow_password_change,
+      allow_password_change: @current_user.allow_password_change
     }
   end
 end
