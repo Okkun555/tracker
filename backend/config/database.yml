@@ -9,13 +9,13 @@ default: &default
   encoding: utf8
   port: 5432
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: tracker
+  password: password
+  host: db
 
 development:
   <<: *default
-  username: tracker
-  password: password
   database: tracker
-  host: db
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
@@ -26,4 +26,4 @@ test:
 
 production:
   <<: *default
-  database: tracker_prd
+  database: tracker_production
