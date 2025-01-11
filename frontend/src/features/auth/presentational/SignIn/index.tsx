@@ -1,4 +1,5 @@
-import InputField from "@/components/Form/InputField";
+import { Control, UseFormHandleSubmit } from "react-hook-form";
+import { SignInFormSchema } from "@/features/auth/hooks/useSignInForm";
 import {
   Avatar,
   Box,
@@ -7,16 +8,16 @@ import {
   CssBaseline,
   Typography,
 } from "@mui/material";
-import { Control, UseFormHandleSubmit } from "react-hook-form";
-import { SignUpFormSchema } from "@/features/auth/hooks/useSignUpForm";
+import InputField from "@/components/Form/InputField";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
 
-type SignUpProps = {
-  control: Control<SignUpFormSchema>;
-  handleSubmit: UseFormHandleSubmit<SignUpFormSchema>;
+type SignInProps = {
+  control: Control<SignInFormSchema>;
+  handleSubmit: UseFormHandleSubmit<SignInFormSchema>;
 };
 
-export default function SignUp({ control, handleSubmit }: SignUpProps) {
-  const onSubmit = (data: SignUpFormSchema) => console.log(data);
+export default function SignIn({ control, handleSubmit }: SignInProps) {
+  const onSubmit = (data: SignInFormSchema) => console.log(data);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -30,9 +31,11 @@ export default function SignUp({ control, handleSubmit }: SignUpProps) {
           padding: 2,
         }}
       >
-        <Avatar sx={{ mb: 1, bgcolor: "primary.main" }} />
+        <Avatar sx={{ mb: 1, bgcolor: "primary.main" }}>
+          <LockOpenIcon />
+        </Avatar>
         <Typography component="h1" variant="h5">
-          アカウント作成
+          ログイン
         </Typography>
         <Box
           component="form"
@@ -40,7 +43,7 @@ export default function SignUp({ control, handleSubmit }: SignUpProps) {
           sx={{ mt: 1 }}
           onSubmit={handleSubmit(onSubmit)}
         >
-          <InputField<SignUpFormSchema>
+          <InputField<SignInFormSchema>
             fieldWrapperProps={{ label: "メールアドレス", required: true }}
             name="email"
             control={control}
@@ -49,7 +52,7 @@ export default function SignUp({ control, handleSubmit }: SignUpProps) {
             sx={{ mb: 2 }}
           />
 
-          <InputField<SignUpFormSchema>
+          <InputField<SignInFormSchema>
             fieldWrapperProps={{ label: "パスワード", required: true }}
             name="password"
             control={control}
@@ -57,20 +60,9 @@ export default function SignUp({ control, handleSubmit }: SignUpProps) {
             sx={{ mb: 2 }}
           />
 
-          <InputField<SignUpFormSchema>
-            fieldWrapperProps={{
-              label: "パスワード（確認）",
-              required: true,
-            }}
-            name="passwordConfirmation"
-            control={control}
-            type="password"
-            sx={{ mb: 2 }}
-          />
-
           <Box sx={{ textAlign: "center" }}>
             <Button type="submit" variant="contained" fullWidth>
-              アカウント作成
+              ログイン
             </Button>
           </Box>
         </Box>
