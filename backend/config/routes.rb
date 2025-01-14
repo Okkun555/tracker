@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     end
 
     resources :user, only: [] do
-      resource :profile, only: [:show, :create, :update]
+      resource :profile, only: [:show, :create, :update], controller: 'user/profiles'
     end
 
     get "up" => "rails/health#show", as: :rails_health_check
