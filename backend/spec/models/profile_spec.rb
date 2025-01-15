@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe Profile, type: :model do
   let(:user) { create(:user) }
   let(:name) { 'Jon Taro' }
-  let(:introduction) { 'I live in Japan.'}
-  let(:birthday) { 	Date.new(1990, 1, 1) }
+  let(:introduction) { 'I live in Japan.' }
+  let(:birthday) {	Date.new(1990, 1, 1) }
   let(:gender) { :man }
 
   describe '.first' do
@@ -20,7 +20,7 @@ RSpec.describe Profile, type: :model do
         name: name,
         introduction: introduction,
         birthday: birthday,
-        gender: gender.to_s,
+        gender: gender.to_s
       )
     end
   end
