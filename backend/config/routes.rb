@@ -6,6 +6,10 @@ Rails.application.routes.draw do
       resource :user, only: [:show]
     end
 
+    resources :user, only: [] do
+      resource :profile, only: [:show, :create, :update], controller: 'user/profiles'
+    end
+
     get "up" => "rails/health#show", as: :rails_health_check
   end
 end
