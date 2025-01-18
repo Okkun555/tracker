@@ -22,24 +22,39 @@ class User::ProfilesController < ApplicationController
 
   def create
     if current_user.profile
-      render json: {
+      return render json: {
         message: 'プロフィールは既に作成されています。'
       }, status: :bad_request
-    else
-      profile = current_user.build_profile(profile_params)
-      if profile.save!
-        render json: {
-          id: profile.id,
-          name: profile.name,
-          introduction: profile.introduction,
-          birthday: profile.birthday,
-          gender: profile.gender
-        }, status: :created
-      end
+    end
+
+    profile = current_user.build_profile(profile_params)
+    if profile.save!
+      render json: {
+        id: profile.id,
+        name: profile.name,
+        introduction: profile.introduction,
+        birthday: profile.birthday,
+        gender: profile.gender
+      }, status: :created
     end
   end
 
   def update
+    profile = current_user.profile
+    if profile.nil?
+      return render json: {
+        message: 'プロフィールが見つかりませんでした。'
+      }, status: :not_found
+    end
+
+    if profile.update(profile_params)
+      render json: {
+        id: profile.id,
+        name: profile.name,
+        introduction: profile.introduction,
+        birthday: profile
+      }, status: :ok
+    end
   end
 
   private

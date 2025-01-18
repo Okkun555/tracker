@@ -53,7 +53,8 @@ RSpec.describe 'User::Profiles', type: :request do
         expect(Profile.last).to have_attributes(
           name: 'テストユーザー',
           introduction: 'テストです。',
-          birthday: Date.parse('1990-01-01')
+          birthday: Date.parse('1990-01-01'),
+          gender: 'man'
         )
       end
     end
@@ -66,6 +67,44 @@ RSpec.describe 'User::Profiles', type: :request do
 
         expect(response).to have_http_status :bad_request
         expect(subject).to include('message' => 'プロフィールは既に作成されています。')
+      end
+    end
+  end
+
+  describe 'PATCH /user/:user_id/profile' do
+    let(:params) do
+      {
+        profile: {
+          name: 'テストユーザー',
+          introduction: 'テストです。',
+          birthday: '1990-01-01',
+          gender: 'man'
+        }
+      }
+    end
+
+    context 'プロフィール未作成の場合' do
+      it 'プロフィールの更新に失敗する' do
+        patch user_profile_path(user), headers: token, params: params
+
+        expect(response).to have_http_status :not_found
+        expect(subject).to include('message' => 'プロフィールが見つかりませんでした。')
+      end
+    end
+
+    context 'プロフィール作成済みの場合' do
+      let!(:profile) { create(:profile, user: user) }
+
+      it 'ユーザーのプロフィールを更新する' do
+        patch user_profile_path(user), headers: token, params: params
+
+        expect(response).to have_http_status :ok
+        expect(Profile.last).to have_attributes(
+          name: 'テストユーザー',
+          introduction: 'テストです。',
+          birthday: Date.parse('1990-01-01'),
+          gender: 'man'
+        )
       end
     end
   end
