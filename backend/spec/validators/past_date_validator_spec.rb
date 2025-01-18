@@ -25,7 +25,7 @@ describe PastDateValidator do
   end
 
   context '当日の場合' do
-    let(:birthday) { Date.today }
+    let(:birthday) { Time.zone.today }
 
     it '有効であること' do
       expect(subject).to be_valid

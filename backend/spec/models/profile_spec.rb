@@ -95,7 +95,7 @@ RSpec.describe Profile, type: :model do
       end
 
       describe '未来日の場合' do
-        let(:birthday) { Date.today + 1 }
+        let(:birthday) { Time.zone.today + 1 }
 
         it 'Profileオブジェクトは無効' do
           expect(profile.valid?).to be(false)

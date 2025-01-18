@@ -4,9 +4,9 @@ RSpec.describe 'User::Profiles', type: :request do
   let(:user) { create(:user) }
   let(:token) { sign_in user }
 
-  describe 'GET /user/:user_id/profile' do
-    subject { JSON.parse(response.body) }
+  subject { response.parsed_body }
 
+  describe 'GET /user/:user_id/profile' do
     context 'プロフィール未作成の場合' do
       it 'ユーザーのプロフィールが存在しない' do
         get user_profile_path(user), headers: token
@@ -29,6 +29,43 @@ RSpec.describe 'User::Profiles', type: :request do
           'birthday' => profile.birthday.to_s,
           'gender' => profile.gender
         )
+      end
+    end
+  end
+
+  describe 'POST /user/:user_id/profile' do
+    let(:params) do
+      {
+        profile: {
+          name: 'テストユーザー',
+          introduction: 'テストです。',
+          birthday: '1990-01-01',
+          gender: 'man'
+        }
+      }
+    end
+
+    context 'プロフィール未作成の場合' do
+      it 'ユーザーのプロフィールを作成する' do
+        post user_profile_path(user), headers: token, params: params
+
+        expect(response).to have_http_status :created
+        expect(Profile.last).to have_attributes(
+          name: 'テストユーザー',
+          introduction: 'テストです。',
+          birthday: Date.parse('1990-01-01')
+        )
+      end
+    end
+
+    context 'プロフィール作成済みの場合' do
+      let!(:profile) { create(:profile, user: user) }
+
+      it 'プロフィールの作成に失敗する' do
+        post user_profile_path(user), headers: token, params: params
+
+        expect(response).to have_http_status :bad_request
+        expect(subject).to include('message' => 'プロフィールは既に作成されています。')
       end
     end
   end
