@@ -1,7 +1,7 @@
 test:
   adapter: postgresql
   encoding: unicode
-  database: myapp_test
+  database: tracker_test
   pool: 5
   username: postgres
   password: password
