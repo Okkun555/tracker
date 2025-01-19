@@ -32,11 +32,11 @@ jobs:
       with:
         ruby-version: '3.2.2'
 
-    - name: Cache Ruby gem # Ruby gemをキャッシュする
+    - name: Cache Ruby gem
       uses: actions/cache@v3
       with:
-        path: vendor/bundle # キャッシュするディレクトリを指定します。
-        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }} # キャッシュのキーを指定します。
+        path: vendor/bundle
+        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
         restore-keys: |
           ${{ runner.os }}-gems-
 
@@ -44,7 +44,11 @@ jobs:
       run: |
         cd backend
         gem install bundler
+        bundle config set path 'vendor/bundle'
         bundle install
+
+    - name: Wait for Database
+      run: sleep 10
 
     - name: Set up database
       run: |
