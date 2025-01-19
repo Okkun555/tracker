@@ -47,8 +47,10 @@ jobs:
         bundle config set path 'vendor/bundle'
         bundle install
 
-    - name: Wait for Database
-      run: sleep 10
+    - name: Test Database Connection
+      run: |
+        echo "Testing database connection..."
+        PGPASSWORD=password psql -h db -U postgres -d postgres -c '\l'
 
     - name: Set up database
       run: |
