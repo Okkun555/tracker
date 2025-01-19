@@ -1,7 +1,8 @@
 test:
   adapter: postgresql
-  encoding: unicode
-  database: tracker_test
+  encoding: utf8
+  port: 5432
+  database: postgres
   pool: 5
   username: postgres
   password: password
