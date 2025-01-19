@@ -5,10 +5,12 @@ import {
   Button,
   Container,
   CssBaseline,
+  styled,
   Typography,
 } from "@mui/material";
 import { Control, UseFormHandleSubmit } from "react-hook-form";
 import { SignUpFormSchema } from "@/features/auth/hooks/useSignUpForm";
+import Link from "next/link";
 
 type SignUpProps = {
   control: Control<SignUpFormSchema>;
@@ -74,7 +76,22 @@ export default function SignUp({ control, handleSubmit }: SignUpProps) {
             </Button>
           </Box>
         </Box>
+
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          align="center"
+          sx={{ mt: 2 }}
+        >
+          アカウントをお持ちの方は
+          <SignInLink href="/sign_in">こちら</SignInLink>
+        </Typography>
       </Box>
     </Container>
   );
 }
+
+const SignInLink = styled(Link)(({ theme }) => ({
+  color: theme.palette.primary.main,
+  borderBottom: `1px solid ${theme.palette.primary.main}`,
+}));

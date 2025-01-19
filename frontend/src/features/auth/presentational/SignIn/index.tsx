@@ -6,10 +6,12 @@ import {
   Button,
   Container,
   CssBaseline,
+  styled,
   Typography,
 } from "@mui/material";
 import InputField from "@/components/Form/InputField";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
+import Link from "next/link";
 
 type SignInProps = {
   control: Control<SignInFormSchema>;
@@ -66,7 +68,22 @@ export default function SignIn({ control, handleSubmit }: SignInProps) {
             </Button>
           </Box>
         </Box>
+
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          align="center"
+          sx={{ mt: 2 }}
+        >
+          アカウントをお持ちでない方は
+          <SignUpLink href="/sign_up">こちら</SignUpLink>
+        </Typography>
       </Box>
     </Container>
   );
 }
+
+const SignUpLink = styled(Link)(({ theme }) => ({
+  color: theme.palette.primary.main,
+  borderBottom: `1px solid ${theme.palette.primary.main}`,
+}));
