@@ -42,6 +42,7 @@ jobs:
       run: |
         cd backend
         until pg_isready -h db -U postgres; do
+          docker logs $(docker ps -q --filter "name=db")
           echo "Waiting for PostgreSQL..."
           sleep 5
         done
