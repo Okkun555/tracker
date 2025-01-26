@@ -1,6 +1,8 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useCreateUser } from "@/hooks/api/useAuth";
+import { useCallback } from "react";
 
 export const useSignUpForm = () => {
   const {
@@ -18,7 +20,12 @@ export const useSignUpForm = () => {
     resolver: zodResolver(signUpFormSchema),
   });
 
-  return { control, handleSubmit, errors };
+  const { trigger } = useCreateUser();
+  const postSignUp = useCallback(async (args: SignUpFormSchema) => {
+    await trigger(args)
+  }, [trigger]);
+
+  return { control, handleSubmit, errors, postSignUp };
 };
 
 const signUpFormSchema = z.object({

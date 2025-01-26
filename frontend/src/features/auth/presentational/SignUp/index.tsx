@@ -15,11 +15,10 @@ import Link from "next/link";
 type SignUpProps = {
   control: Control<SignUpFormSchema>;
   handleSubmit: UseFormHandleSubmit<SignUpFormSchema>;
+  onSubmit: (args: SignUpFormSchema) => Promise<void>;
 };
 
-export default function SignUp({ control, handleSubmit }: SignUpProps) {
-  const onSubmit = (data: SignUpFormSchema) => console.log(data);
-
+export default function SignUp({ control, handleSubmit, onSubmit }: SignUpProps) {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
