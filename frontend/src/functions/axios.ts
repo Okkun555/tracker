@@ -24,11 +24,27 @@ const fetcher = async({
         responseType: 'json',
         headers: {
             "Content-Type": "application/json",
+            client: localStorage.getItem('client'),
+            uid: localStorage.getItem('uid'),
+            "access-token": localStorage.getItem('access-token'),
         }
     })
 
     instance.interceptors.response.use(
-        (response) => response.data,
+        (response) => {
+            // TODO: LocalStorageに認証情報を保存しているが、別の方法に切り替えたい
+            if (
+                response.headers['access-token'] &&
+                response.headers['client'] &&
+                response.headers['uid']
+            ) {
+                localStorage.setItem('access-token', response.headers['access-token'])
+                localStorage.setItem('client', response.headers['client'])
+                localStorage.setItem('client', response.headers['uid'])
+            }
+
+            return response.data
+        },
         (error) => {
             // TODO: エラーハンドリングを実施
             console.log(error)
