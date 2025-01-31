@@ -32,6 +32,7 @@ const fetcher = async({
 
     instance.interceptors.response.use(
         (response) => {
+            console.log(response.headers['client'])
             // TODO: LocalStorageに認証情報を保存しているが、別の方法に切り替えたい
             if (
                 response.headers['access-token'] &&
@@ -40,7 +41,7 @@ const fetcher = async({
             ) {
                 localStorage.setItem('access-token', response.headers['access-token'])
                 localStorage.setItem('client', response.headers['client'])
-                localStorage.setItem('client', response.headers['uid'])
+                localStorage.setItem('uid', response.headers['uid'])
             }
 
             return response.data
