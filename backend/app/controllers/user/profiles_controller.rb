@@ -3,9 +3,9 @@ class User::ProfilesController < ApplicationController
 
   def show
     @profile = current_user.profile
-    
+
     return render_not_found unless @profile
-    
+
     render json: @profile.as_json
   end
 
@@ -22,21 +22,16 @@ class User::ProfilesController < ApplicationController
   end
 
   def update
-    profile = current_user.profile
-    if profile.nil?
-      return render json: {
-        message: 'プロフィールが見つかりませんでした。'
-      }, status: :not_found
+    @profile = current_user.profile
+
+    return render_not_found unless @profile
+
+    ActiveRecord::Base.transaction do
+      @profile.update!(profile_params)
+      @profile.avatar.attach(profile_params[:avatar]) if profile_params[:avatar]
     end
 
-    return unless profile.update(profile_params)
-
-    render json: {
-      id: profile.id,
-      name: profile.name,
-      introduction: profile.introduction,
-      birthday: profile
-    }, status: :ok
+    render json: @profile.as_json
   end
 
   private

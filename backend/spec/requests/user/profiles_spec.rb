@@ -73,12 +73,11 @@ RSpec.describe 'User::Profiles', type: :request do
   describe 'PATCH /user/:user_id/profile' do
     let(:params) do
       {
-        profile: {
-          name: 'テストユーザー',
-          introduction: 'テストです。',
-          birthday: '1990-01-01',
-          gender: 'man'
-        }
+        name: 'テストユーザー',
+        introduction: 'テストです。',
+        birthday: '1990-01-01',
+        gender: 'man'
+        
       }
     end
 
@@ -87,7 +86,7 @@ RSpec.describe 'User::Profiles', type: :request do
         patch user_profile_path(user), headers: token, params: params
 
         expect(response).to have_http_status :not_found
-        expect(subject).to include('message' => 'プロフィールが見つかりませんでした。')
+        expect(subject).to include('message' => 'リソースが見つかりません。')
       end
     end
 
