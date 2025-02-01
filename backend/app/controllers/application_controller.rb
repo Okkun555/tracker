@@ -3,7 +3,7 @@ class ApplicationController < ActionController::API
   include DeviseHackFakeSession
 
   protected
-  
+
   def render_not_found
     render json: { 'message' => 'リソースが見つかりません。' }, status: :not_found
   end

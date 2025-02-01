@@ -77,7 +77,7 @@ RSpec.describe 'User::Profiles', type: :request do
         introduction: 'テストです。',
         birthday: '1990-01-01',
         gender: 'man'
-        
+
       }
     end
 
