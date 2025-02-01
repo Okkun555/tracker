@@ -1,0 +1,69 @@
+name: Run Rspec, Rubocop
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      db:
+        image: postgres:16.0
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.2.2'
+
+    - name: Cache Ruby gem
+      uses: actions/cache@v3
+      with:
+        path: vendor/bundle
+        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-gems-
+
+    - name: Install dependencies
+      run: |
+        cd backend
+        gem install bundler
+        bundle config set path 'vendor/bundle'
+        bundle install
+
+    - name: Test Database Connection
+      run: |
+        echo "Testing database connection..."
+        PGPASSWORD=password psql -h db -U postgres -d postgres -c '\l'
+
+    - name: Set up database
+      run: |
+        cd backend
+        cp config/database.yml.ci config/database.yml
+        bin/rails db:create
+        bin/rails db:migrate
+      env:
+        RAILS_ENV: test
+        DATABASE_URL: postgres://postgres:password@db:5432/postgres
+
+    - name: Run RSpec
+      run: cd backend && bundle exec rspec
+
+    - name: Run RuboCop
+      run: cd backend && bundle exec rubocop
