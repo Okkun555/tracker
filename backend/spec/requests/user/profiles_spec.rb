@@ -36,12 +36,11 @@ RSpec.describe 'User::Profiles', type: :request do
   describe 'POST /user/:user_id/profile' do
     let(:params) do
       {
-        profile: {
-          name: 'テストユーザー',
-          introduction: 'テストです。',
-          birthday: '1990-01-01',
-          gender: 'man'
-        }
+        name: 'テストユーザー',
+        introduction: 'テストです。',
+        birthday: '1990-01-01',
+        gender: 'man'
+        
       }
     end
 
